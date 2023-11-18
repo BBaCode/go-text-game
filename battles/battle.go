@@ -11,15 +11,21 @@ import (
 	"github.com/bbacode/go-text-game/player"
 )
 
-func Battle(mob mobs.Monster, p player.Player) player.Player {
+type BattleResult struct {
+	PlayerWon     bool
+	UpdatedPlayer player.Player // If the player won, this contains the updated player information
+}
+
+func Battle(mob mobs.Monster, p player.Player) BattleResult {
 	reader := bufio.NewReader(os.Stdin)
 	turn := 1
+	updatedPlayer := p
 	fmt.Println("Oh no you encountered a ", mob.Name, "!")
 	fmt.Println("BATTLE START")
-	for p.HP > 0 && mob.HP > 0 {
+	for p.CurrentHP > 0 && mob.HP > 0 {
 
 		fmt.Println("---------- TURN", turn, "----------")
-		fmt.Println(p.Name, " HP: ", p.HP, " ", mob.Name, " HP: ", mob.HP)
+		fmt.Println(p.Name, " HP: ", p.CurrentHP, " ", mob.Name, " HP: ", mob.HP)
 		fmt.Print("Attack (-", p.Damage, "):[a] | Pass (0):[s]")
 		userInput, _ := reader.ReadString('\n')
 		userInput = strings.TrimSuffix(userInput, "\n")
@@ -29,17 +35,18 @@ func Battle(mob mobs.Monster, p player.Player) player.Player {
 		}
 		if mob.HP <= 0 {
 			fmt.Println("You won!")
-			winner := player.AddExperience(p, mob)
-			return winner
+			updatedPlayer = player.AddExperience(p, mob)
+			return BattleResult{PlayerWon: true, UpdatedPlayer: updatedPlayer}
 		} else {
-			fmt.Println(mob.Name, " attacks!", p.Name, "'s health: ", p.HP, " => ", p.HP-mob.Damage)
-			p.HP = p.HP - mob.Damage
+			fmt.Println(mob.Name, " attacks!", p.Name, "'s health: ", p.CurrentHP, " => ", p.CurrentHP-mob.Damage)
+			p.CurrentHP = p.CurrentHP - mob.Damage
 		}
-		if p.HP <= 0 {
+		if p.CurrentHP <= 0 {
 			fmt.Println("Oh dear! You have died.")
+			return BattleResult{PlayerWon: false, UpdatedPlayer: p}
 		}
 
 		turn++
 	}
-	return p
+	return BattleResult{PlayerWon: true, UpdatedPlayer: updatedPlayer}
 }

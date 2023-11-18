@@ -6,8 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/bbacode/go-text-game/battles"
-	"github.com/bbacode/go-text-game/mobs"
+	"github.com/bbacode/go-text-game/levels"
 	"github.com/bbacode/go-text-game/player"
 )
 
@@ -22,10 +21,11 @@ func main() {
 	fmt.Println(playerName, "? Huh? Don't sound like much of a hero, but it doesnt matter")
 
 	player := player.NewPlayer(playerName)
-	goblin := mobs.NewGoblin()
 
-	p1 := battles.Battle(goblin, player)
-	p2 := battles.Battle(goblin, p1)
-	battles.Battle(goblin, p2)
+	levels.Level1(player)
+
+	// p1 := battles.Battle(goblin, player)
+	// p2 := battles.Battle(goblin, p1.UpdatedPlayer)
+	// battles.Battle(goblin, p2.UpdatedPlayer)
 
 }
