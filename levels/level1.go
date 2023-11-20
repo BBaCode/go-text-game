@@ -33,9 +33,10 @@ func Level1(p player.Player) {
 	fmt.Println("As you delve deeper, cursed guardians awaken to test your worth.")
 
 	// Battle Encounter
-	if battles.Battle(mobs.NewGoblin(), p).PlayerWon == true {
+	result1 := battles.Battle(mobs.NewCursedGuardian(), p)
+	if result1.PlayerWon == true {
 		fmt.Println("You defeat the cursed guardians.")
-		updatedPlayer = battles.Battle(mobs.NewGoblin(), p).UpdatedPlayer
+		updatedPlayer = result1.UpdatedPlayer
 	} else {
 		fmt.Println("The cursed guardians overwhelm you. Game over.")
 		return
@@ -62,8 +63,10 @@ func Level1(p player.Player) {
 	fmt.Println("At the heart of the Cursed Abyss stands the Abyssal Warden.")
 
 	// Boss Battle
-	if battles.Battle(mobs.NewGoblin(), updatedPlayer).PlayerWon == true {
+	bossResult := battles.Battle(mobs.NewCursedGuardian(), updatedPlayer)
+	if bossResult.PlayerWon == true {
 		fmt.Println("You defeat the Abyssal Warden and claim a mystical cloak.")
+		updatedPlayer = bossResult.UpdatedPlayer
 	} else {
 		fmt.Println("The Abyssal Warden proves too powerful. Game over.")
 		return
@@ -72,4 +75,5 @@ func Level1(p player.Player) {
 	// Reward
 	fmt.Println("The radiant cloak enhances your defenses, providing a glimpse of godlike power.")
 	fmt.Println("With the cloak adorning your shoulders, you are ready to ascend further into the realms of your destiny.")
+	fmt.Println(updatedPlayer)
 }

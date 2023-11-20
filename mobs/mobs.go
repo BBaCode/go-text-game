@@ -24,6 +24,6 @@ func NewGoblin() Monster {
 	return NewMonster("Goblin", 20, 3, 40)
 }
 
-func NewTortelli() Monster {
-	return NewMonster("Tortelli", 30, 5, 13)
+func NewCursedGuardian() Monster {
+	return NewMonster("Goblin", 30, 3, 28)
 }

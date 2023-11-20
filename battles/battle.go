@@ -20,7 +20,7 @@ func Battle(mob mobs.Monster, p player.Player) BattleResult {
 	reader := bufio.NewReader(os.Stdin)
 	turn := 1
 	updatedPlayer := p
-	fmt.Println("Oh no you encountered a ", mob.Name, "!")
+	fmt.Println("Oh no you encountered a", mob.Name, "!")
 	fmt.Println("BATTLE START")
 	for p.CurrentHP > 0 && mob.HP > 0 {
 
