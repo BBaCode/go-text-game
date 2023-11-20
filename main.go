@@ -1,31 +1,62 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"os"
-	"strings"
+	"net/http"
 
-	"github.com/bbacode/go-text-game/levels"
-	"github.com/bbacode/go-text-game/player"
+	"github.com/gorilla/websocket"
 )
 
+var upgrader = websocket.Upgrader{
+	CheckOrigin: func(r *http.Request) bool {
+		return true
+	},
+}
+
+func handleWebSocket(w http.ResponseWriter, r *http.Request) {
+	conn, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer conn.Close()
+
+	fmt.Println("Client connected")
+	initialMessage := "Welcome to the WebSocket server!"
+	if err := conn.WriteMessage(websocket.TextMessage, []byte(initialMessage)); err != nil {
+		fmt.Println("Error sending initial message:", err)
+		return
+	}
+
+	for {
+		// Read message from the client
+		messageType, p, err := conn.ReadMessage()
+		if err != nil {
+			fmt.Println("Client disconnected")
+			return
+		}
+
+		if string(p) == "force-error" {
+			errMessage := "Simulated error: Forced from the client side"
+			fmt.Println(errMessage)
+			conn.WriteMessage(messageType, []byte(errMessage))
+			return
+		}
+
+		// Print the received message
+		fmt.Printf("Received message: %s\n", p)
+
+		// Echo the message back to the client
+		if err := conn.WriteMessage(messageType, p); err != nil {
+			fmt.Println("Error writing message:", err)
+			return
+		}
+
+	}
+
+}
+
 func main() {
-
-	reader := bufio.NewReader(os.Stdin)
-
-	fmt.Print("Please Enter your name, Hero: ")
-	playerName, _ := reader.ReadString('\n')
-	playerName = strings.TrimSuffix(playerName, "\n")
-
-	fmt.Println(playerName, "? Huh? Don't sound like much of a hero, but it doesnt matter")
-
-	player := player.NewPlayer(playerName)
-
-	levels.Level1(player)
-
-	// p1 := battles.Battle(goblin, player)
-	// p2 := battles.Battle(goblin, p1.UpdatedPlayer)
-	// battles.Battle(goblin, p2.UpdatedPlayer)
-
+	http.HandleFunc("/ws", handleWebSocket)
+	http.ListenAndServe(":8080", nil)
 }
