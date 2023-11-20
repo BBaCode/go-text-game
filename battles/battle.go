@@ -25,8 +25,10 @@ func Battle(mob mobs.Monster, p player.Player) BattleResult {
 	for p.CurrentHP > 0 && mob.HP > 0 {
 
 		fmt.Println("---------- TURN", turn, "----------")
-		fmt.Println(p.Name, " HP: ", p.CurrentHP, " ", mob.Name, " HP: ", mob.HP)
-		fmt.Print("Attack (-", p.Damage, "):[a] | Pass (0):[s]")
+		fmt.Println(p.Name, " HP: ", p.CurrentHP)
+		fmt.Println(mob.Name, " HP: ", mob.HP)
+		fmt.Println("Attack (-", p.Damage, "):[a]")
+		fmt.Println("Pass (0):[s]")
 		userInput, _ := reader.ReadString('\n')
 		userInput = strings.TrimSuffix(userInput, "\n")
 		if userInput == "a" {

@@ -25,5 +25,5 @@ func NewGoblin() Monster {
 }
 
 func NewCursedGuardian() Monster {
-	return NewMonster("Goblin", 30, 3, 28)
+	return NewMonster("Cursed Guardian", 30, 3, 28)
 }

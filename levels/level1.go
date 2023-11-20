@@ -13,7 +13,9 @@ func Level1(p player.Player) {
 	updatedPlayer := p
 
 	// Scene 1: The Entrance to Darkness
-	fmt.Println("You stand at the entrance of the Cursed Abyss.")
+	fmt.Println("You stand at the entrance of the Cursed Abyss, the air thick with an otherworldly energy.")
+	fmt.Println("To the left, you see a well-lit path, but hear strange whirring and movement of what sounds like machines.")
+	fmt.Println("To the right, the cavernous tunnels ahead are shrouded in darkness, and strange, haunting echoes reverberate through the cold stone.")
 	fmt.Println("a) Take the well-lit path, possibly guarded by ancient guardians.")
 	fmt.Println("b) Venture into the shadows, risking encounters with unknown creatures.")
 
@@ -25,6 +27,7 @@ func Level1(p player.Player) {
 		fmt.Println("You choose the well-lit path.")
 	} else if pathChoice == "b" {
 		fmt.Println("You venture into the shadows.")
+		fmt.Println("Torches flicker as you descend into the unknown, guided only by the ancestral whispers urging you forward.")
 	} else {
 		fmt.Println("Invalid choice. Defaulting to the well-lit path.")
 	}
@@ -75,5 +78,4 @@ func Level1(p player.Player) {
 	// Reward
 	fmt.Println("The radiant cloak enhances your defenses, providing a glimpse of godlike power.")
 	fmt.Println("With the cloak adorning your shoulders, you are ready to ascend further into the realms of your destiny.")
-	fmt.Println(updatedPlayer)
 }
